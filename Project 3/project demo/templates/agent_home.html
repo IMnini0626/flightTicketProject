@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div align="right">
+        <a href="/logout">Logout</a>
+    </div>
+    
+    <h1 align="center">Welcome, {{name}}</h1>
+    <div>
+        <h2 align="center">My flight</h2>
+        {% if myflight %}
+        <table border="1" align="center">
+            <tr>
+                <th>Customer Email</th>
+                <th>Airline</th>
+                <th>Flight Number</th>
+                <th>Departure Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Time</th>
+                <th>Ticket Price</th>
+                <th>Flight Status</th>
+            </tr>
+            {% for line in myflight %}
+            <tr>
+                <td>{{line['customer_email']}}</td>
+                <td>{{line['airline_name']}}</td>
+                <td>{{line['flight_num']}}</td>
+                <td>{{line['departure_airport']}}</td>
+                <td>{{line['departure_time']}}</td>
+                <td>{{line['arrival_airport']}}</td>
+                <td>{{line['arrival_time']}}</td>
+                <td>{{line['price']}}</td>
+                <td>{{line['status']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div align="center">
+            <text>No data</text>
+        </div>
+        {% endif %}
+    </div>
+
+
+    <div>
+        <h2 align="center">Search for a flight!</h2>
+        <form action="/agent/result" method="post" align="center">
+            <table border="0" align="center">
+                <tr>
+                    <td align="right"><label for="departure_city">Departure City: </label></td>
+                    <td align="left"><input type="text" name="departure_city" id="departure_city" placeholder="from" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="arrival_city">Arrival City: </label></td>
+                    <td align="left"><input type="text" name="arrival_city" id="arrival_city" placeholder="to" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="departure_date">Departure Date: </label></td>
+                    <td align="left"><input type="date" name="departure_date" id="departure_date" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="arrival_date">Arrival Date: </label></td>
+                    <td align="left"><input type="date" name="arrival_date" id="arrival_date" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="Search" />
+        </form>
+        <div align="center">
+            <h2 align="center">--OR--</h2>
+            <h2>Abstract Search</h2>
+            <form action="/agent/abstract_result" method="POST">
+                <input type="text" name="searchText" placeholder="search"/>
+                <input type="submit" value = "Search" />
+            </form>
+        </div>
+        <div align="center">
+            <h2 align="center">--OR--</h2>
+            <h2>Search for an Existing Flight</h2>
+            <form action="/agent/number_result" method="POST">
+                <table>
+                    <tr>
+                        <td align="right"><label for="airline_name">Airline: </label></td>
+                        <td align="left">
+                            <select name="airline_name" id="airline_name" required>
+                                {% for airline in airlines %}
+                                <option value="{{airline['airline_name']}}">{{airline['airline_name']}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"><label for="flight_number">Flight Number: </label></td>
+                        <td align="left"><input type="text" name="flight_number" id="flight_number" placeholder="num." /></td>
+                    </tr>
+                </table>
+                <input type="submit" value = "Search" />
+            </form>
+        </div>
+        {% if search_result %}
+        <br></br>
+        <table border="1" align="center">
+            <tr>
+                <th>Airline</th>
+                <th>Flight Number</th>
+                <th>Departure Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Time</th>
+                <th>Ticket Price</th>
+                <th>Flight Status</th>
+                <th>Plane ID</th>
+            </tr>
+            {% for line in search_result %}
+            <tr>
+                <td>{{line['airline_name']}}</td>
+                <td>{{line['flight_num']}}</td>
+                <td>{{line['departure_airport']}}</td>
+                <td>{{line['departure_time']}}</td>
+                <td>{{line['arrival_airport']}}</td>
+                <td>{{line['arrival_time']}}</td>
+                <td>{{line['price']}}</td>
+                <td>{{line['status']}}</td>
+                <td>{{line['airplane_id']}}</td>
+                <td>
+                    {% if line['purchase'] == 1 %}
+                    <form action="/agent/purchase" method="POST">
+                        <input type="submit" value="purchase" name="{{line['airline_name']}},{{line['flight_num']}}"/>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+
+    <div align="center">
+        <h2>View My Commission</h2>
+        <form action="/agent/commission_result" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="from">From: </label></td>
+                    <td align="left"><input type="date" name="from" id="from" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="to">To: </label></td>
+                    <td align="left"><input type="date" name="to" id="to" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="Track">
+        </form>
+        <br></br>
+        <table>
+            <tr>
+                <td align="right">Total commission: </td>
+                <td align="left">{{total_commission}}</td>
+            </tr>
+            <tr>
+                <td align="right">Average commission: </td>
+                <td align="left">{{average_commission}}</td>
+            </tr>
+            <tr>
+                <td align="right">Total tickets: </td>
+                <td align="left">{{total_tickets}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2 align="center">View Top Customers</h2>
+    <div id="customerchart" align="center">
+        <svg width="1100" height="500"></svg>
+    </div>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        var ticketDataUrl = "{{ url_for('customer_data_ticket') }}";
+        var commissionDataUrl = "{{ url_for('customer_data_commission') }}";
+    </script>
+    <script src={{ url_for('static', filename = 'customerchart.js') }}></script>
+    
+
+</body>
+</html>

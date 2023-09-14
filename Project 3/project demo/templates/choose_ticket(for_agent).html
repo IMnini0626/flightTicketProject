@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Ticket</title>
+</head>
+<body>
+    <div align="center">
+        <h1>Choose ticket for flight {{airline_name}} {{flight_num}}</h1>
+        <table border="1">
+            <tr>
+                <th>Ticket Number</th>
+                <th>Purchase</th>
+            </tr>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ticket['ticket_id']}}</td>
+                <td>
+                    <form action="/agent/purchase_result" method="POST">
+                        <input type="submit" value="purchase" name="{{ticket['ticket_id']}}"/>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <a align="center" href="/agent/back">Back to homepage</a>
+
+</body>
+</html>

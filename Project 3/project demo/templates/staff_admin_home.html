@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin home</title>
+</head>
+<body>
+
+<div align="center">
+    <div align="right">
+        <a href="/logout">Logout</a>
+    </div>
+    <div align="right">
+        <a href="/staff/back">Back to Staff Homepage</a>
+    </div>
+    <div align="center">
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+        {% endif %}
+    </div>
+    <h1>Welcome, {{username}}</h1>
+    <div id="create_new_flights">
+        <h2>Create New Flights</h2>
+        <form action="/staff_admin/new_flights" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="flight_num">Flight Number: </label></td>
+                    <td align="left"><input type="text" name="flight_num" id="flight_num" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="departure_airport">Departure Airport: </label></td>
+                    <td align="left"><input type="text" name="departure_airport" id="departure_airport" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="departure_time">Departure Time: </label></td>
+                    <td align="left"><input type="datetime-local" name="departure_time" id="departure_time" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="arrival_airport">Arrival Airport: </label></td>
+                    <td align="left"><input type="text" name="arrival_airport" id="arrival_airport" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="arrival_time">Arrival Time: </label></td>
+                    <td align="left"><input type="datetime-local" name="arrival_time" id="arrival_time" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="price">Price: </label></td>
+                    <td align="left"><input type="text" name="price" id="price" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="permission">Status: </label></td>
+                    <td align="left">
+                        <select name="status" id="status">
+                            <option value="upcoming">Upcoming</option>
+                            <option value="in_progress">In progress</option>
+                            <option value="delay">Delay</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="plane_id">Plane ID: </label></td>
+                    <td align="left"><input type="text" name="plane_id" id="plane_id" required/></td>
+                </tr>
+            </table>
+            <input type="submit" value="submit"/>
+        </form>
+    </div>
+    <div id="add_airplane">
+        <h2>Add Airplane</h2>
+        <form action="/staff_admin/new_airplanes" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="airplane_id">Airplane ID: </label></td>
+                    <td align="left"><input type="text" name="airplane_id" id="airplane_id" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="seats">Seats: </label></td>
+                    <td align="left"><input type="text" name="seats" id="seats" required/></td>
+                </tr>
+            </table>
+            <input type="submit" value="submit"/>
+        </form>
+    </div>
+    <div id="add_airport">
+        <h2>Add Airport</h2>
+        <form action="/staff_admin/new_airports" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="airport_name">Airport Name: </label></td>
+                    <td align="left"><input type="text" name="airport_name" id="airport_name" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="airport_city">City: </label></td>
+                    <td align="left"><input type="text" name="airport_city" id="airport_city" required/></td>
+                </tr>
+            </table>
+            <input type="submit" value="submit"/>
+        </form>
+    </div>
+    <div id="grant_new_permission">
+        <h2>Grant New Permission</h2>
+        <form action="/staff_admin/new_permission" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="username">Username: </label></td>
+                    <td align="left"><input type="text" name="username" id="username" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="permission">Permission: </label></td>
+                    <td align="left">
+                        <select name="permission" id="permission">
+                            <option value=Operator>Operator</option>
+                            <option value=Admin>Admin</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="submit"/>
+        </form>
+    </div>
+    <div id="add_booking_agent">
+        <h2>Add Booking Agent</h2>
+        <form action="/staff_admin/new_agents" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="email">Email: </label></td>
+                    <td align="left"><input type="email" name="email" id="email" placeholder="xxx@xxx.com" required/></td>
+                </tr>
+            </table>
+            <input type="submit" value="submit"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Registration</title>
+</head>
+<body>
+    <h1 align="center">Airline Staff Registration</h1>
+    <form action="/register/staff" method="post" align="center"> 
+        <table align="center">
+            <tr>
+                <td align="right"><label for="username">Username: </label></td>
+                <td align="left"><input type="text" name="username" id="username" placeholder="username" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="password">Password: </label></td>
+                <td align="left"><input type="password" name="password" id="password" placeholder="password" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="first_name">First Name: </label></td>
+                <td align="left"><input type="text" name="first_name" id="first_name" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="last_name">Last Name: </label></td>
+                <td align="left"><input type="text" name="last_name" id="last_name" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="date_of_birth">Date of Birth: </label></td>
+                <td align="left"><input type="date" name="date_of_birth" id="date_of_birth" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="airline_name">Airline: </label></td>
+                <td align="left">
+                    <select name="airline_name" id="airline_name" required>
+                        {% for airline in airlines %}
+                        <option value="{{airline['airline_name']}}">{{airline['airline_name']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Register" />
+    </form>
+    
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <div align="center">
+        <h1>Login</h1>
+        <form action="/login/login_branch" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="email">Email/Username: </label></td>
+                    <td align="left"><input type="text" name="email" id="email" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="password">Password: </label></td>
+                    <td align="left"><input type="password" name="password" id="password" placeholder="password" required/></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="id">ID (if needed): </label></td>
+                    <td align="left"><input type="text" name="id" id="id" placeholder="id"/></td>
+                </tr>
+                <tr>
+                    <td align="right">Login: </td>
+                    <td align="left">
+                        <input type="radio" name="login_type" id="customer" value="customer"/><label for="customer">Customer</label>
+                        <input type="radio" name="login_type" id="agent" value="booking_agent"/><label for="agent">Boooking Agent</label>
+                        <input type="radio" name="login_type" id="staff" value="staff"/><label for="staff">Airline Staff</label>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Login"/>
+        </form>
+    </div>
+    <div align="center">
+        {% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	    {% endif %}
+    </div> 
+    
+</body>
+</html>

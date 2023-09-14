@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Flight Management System</title>
+</head>
+
+<body>
+    <div align="right">
+        <a href="/login">login</a>/<a href="/register">register</a></br>
+    </div>
+    <h1 align="center">Advanced Flight Management System</h1>
+    <h2 align="center">Search for an Upcoming Flight!</h2>
+    <form action="/result" method="post" align="center">
+        <table border="0" align="center">
+            <tr>
+                <td align="right"><label for="departure_city">Departure City: </label></td>
+                <td align="left"><input type="text" name="departure_city" id="departure_city" placeholder="from" /></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="arrival_city">Arrival City: </label></td>
+                <td align="left"><input type="text" name="arrival_city" id="arrival_city" placeholder="to" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right"><label for="departure_date">Departure Date: </label></td>
+                <td align="left"><input type="date" name="departure_date" id="departure_date" /></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="arrival_date">Arrival Date: </label></td>
+                <td align="left"><input type="date" name="arrival_date" id="arrival_date" /></td>
+            </tr>
+        </table>
+        <input type="submit" value="Search" />
+    </form>
+    <div align="center">
+        <h2 align="center">--OR--</h2>
+        <h2>Abstract Search</h2>
+        <form action="/abstract_result" method="POST">
+            <input type="text" name="searchText" placeholder="search"/>
+            <input type="submit" value = "Search" />
+        </form>
+    </div>
+    <div align="center">
+        <h2 align="center">--OR--</h2>
+        <h2>Search for an Existing Flight</h2>
+        <form action="/number_result" method="POST">
+            <table>
+                <tr>
+                    <td align="right"><label for="airline_name">Airline: </label></td>
+                    <td align="left">
+                        <select name="airline_name" id="airline_name" required>
+                            {% for airline in airlines %}
+                            <option value="{{airline['airline_name']}}">{{airline['airline_name']}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="flight_number">Flight Number: </label></td>
+                    <td align="left"><input type="text" name="flight_number" id="flight_number" placeholder="num." /></td>
+                </tr>
+            </table>
+            <input type="submit" value = "Search" />
+        </form>
+    </div>
+    {% if search_result %}
+    </br></br>
+    <table border="1" align="center">
+        <tr>
+            <th>Airline</th>
+            <th>Flight Number</th>
+            <th>Departure Airport</th>
+            <th>Departure Time</th>
+            <th>Arrival Airport</th>
+            <th>Arrival Time</th>
+            <th>Ticket Price</th>
+            <th>Flight Status</th>
+            <th>Plane ID</th>
+        </tr>
+        {% for line in search_result %}
+        <tr>
+            <td>{{line['airline_name']}}</td>
+            <td>{{line['flight_num']}}</td>
+            <td>{{line['departure_airport']}}</td>
+            <td>{{line['departure_time']}}</td>
+            <td>{{line['arrival_airport']}}</td>
+            <td>{{line['arrival_time']}}</td>
+            <td>{{line['price']}}</td>
+            <td>{{line['status']}}</td>
+            <td>{{line['airplane_id']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+
+</html>

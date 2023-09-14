@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Registration</title>
+</head>
+<body>
+    <h1 align="center">Agent Registration</h1>
+    <form action="/register/agent" method="post" align="center"> 
+        <table align="center">
+            <tr>
+                <td align="right"><label for="email">Email: </label></td>
+                <td align="left"><input type="email" name="email" id="email" placeholder="xxx@xxx.com" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="password">Password: </label></td>
+                <td align="left"><input type="password" name="password" id="password" placeholder="password" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="booking_agent_id">Booking Agent Id: </label></td>
+                <td align="left"><input type="text" name="booking_agent_id" id="booking_agent_id" required/></td>
+            </tr>
+        </table>
+        <input type="submit" value="Register" />
+    </form>
+    
+</body>
+</html>

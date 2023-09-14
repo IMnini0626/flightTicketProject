@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h1 align="center">Register</h1>
+    <form method="post" action="/register/register_branch" align="center">
+        <input type="submit" value="Customer" name="type"/>
+        <input type="submit" value="Booking Agent" name="type"/>
+        <input type="submit" value="Airline Staff" name="type" />
+    </form>
+    <div align="center">
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

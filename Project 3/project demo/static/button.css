@@ -1,0 +1,17 @@
+#block{
+    margin-left: 36%;
+    margin-right: 36%;
+}
+.button {
+	position: relative;
+	padding: 1em 2em;
+    border: 2px solid;
+	border-color: #96b8b9;
+	border-radius: 100px;
+}
+a:link{
+    color:#96b8b9
+}
+a:visited{
+    color:#407485
+}

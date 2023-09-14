@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Info</title>
+</head>
+<body>
+    <h1 align="center">Purchase for Customer</h1>
+    <form action="/agent/purchase_register_cont" method="post" align="center">
+        <table border="0" align="center">
+            <tr>
+                <td align="right"><label for="email">Email: </label></td>
+                <td align="left"><input type="email" name="email" id="email" placeholder="xxx@xxx.com" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="password">Password: </label></td>
+                <td align="left"><input type="password" name="password" id="password" placeholder="password" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="name">Name: </label></td>
+                <td align="left"><input type="text" name="name" id="name" placeholder="San Zhang" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="building_number">Building number: </label></td>
+                <td align="left"><input type="text" name="building_number" id="building_number" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="street">Street: </label></td>
+                <td align="left"><input type="text" name="street" id="street" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="city">City: </label></td>
+                <td align="left"><input type="text" name="city" id="city" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="state">State: </label></td>
+                <td align="left"><input type="text" name="state" id="state" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="phone_number">Phone Number: </label></td>
+                <td align="left"><input type="tel" name="phone_number" id="phone_number" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="passport_number">Passport Number: </label></td>
+                <td align="left"><input type="text" name="passport_number" id="passport_number" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="passport_expiration">Passport Expiration: </label></td>
+                <td align="left"><input type="date" name="passport_expiration" id="passport_expiration" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="passport_country">Passport Country: </label></td>
+                <td align="left"><input type="text" name="passport_country" id="passport_country" required/></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="date_of_birth">Date of Birth: </label></td>
+                <td align="left"><input type="date" name="date_of_birth" id="date_of_birth" required/></td>
+            </tr>
+        </table>
+        <input type="submit" value="Register & Purchase" />
+    </form>
+    <div align="center">
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

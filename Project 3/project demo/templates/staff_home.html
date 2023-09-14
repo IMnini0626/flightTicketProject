@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff homepage</title>
+    <style>
+        button {
+            background-color: #eaebf0; /* Green */
+            margin: 10px;
+            border: none;
+            border-radius: 10%;
+            color: black;
+            padding: 12px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            }
+    </style>
+</head>
+<body>
+    <h1 align="center">{{airline}}</h1>
+    <div align="right">
+        <a href="/logout">Logout</a>
+    </div>
+    {% if admin == 1 %}
+    <div align="right">
+        <a href="/staff_admin/home">Admin Homepage</a>
+    </div>
+    {% endif %}
+    <h1 align="center">Welcome, {{username}}</h1>
+    <div align="center" id="my_flight">
+        <h2 >My flight</h2>
+        {% if myflight %}
+        <table border="1">
+            <tr>
+                <th>Airline</th>
+                <th>Flight Number</th>
+                <th>Departure Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Time</th>
+                <th>Ticket Price</th>
+                <th>Flight Status</th>
+                <th>Plane ID</th>
+                <th>Customer</th>
+                {% if operator == 1 %}
+                <th>Edit Status</th>
+                {% endif %}
+            </tr>
+            {% for line in myflight %}
+            <tr>
+                <td>{{line['airline_name']}}</td>
+                <td>{{line['flight_num']}}</td>
+                <td>{{line['departure_airport']}}</td>
+                <td>{{line['departure_time']}}</td>
+                <td>{{line['arrival_airport']}}</td>
+                <td>{{line['arrival_time']}}</td>
+                <td>{{line['price']}}</td>
+                <td>{{line['status']}}</td>
+                <td>{{line['airplane_id']}}</td>
+                <td>
+                    <form action="/staff/view_customer" method="POST">
+                        <input type="submit" value="Customer" name="{{line['airline_name']}},{{line['flight_num']}}"/>
+                    </form>
+                </td>
+                {% if operator == 1 %}
+                <td>
+                    <form action="/staff/flight_update" method="POST">
+                        <select name="status" id="status" required>
+                            <option value="Upcoming">Upcoming</option>
+                            <option value="In progress">In progress</option>
+                            <option value="Delayed">Delay</option>
+                            <option value="Done">Done</option>
+                        </select>
+                        <input type="submit" value="submit" name="{{line['airline_name']}},{{line['flight_num']}}"/>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div align="center">
+            <text>No data</text>
+        </div>
+        {% endif %}
+    </div>
+
+    <div align="center" id="search">
+        <h2 align="center">Search for a flight!</h2>
+        <form action="/staff/result" method="post" align="center">
+            <table border="0" align="center">
+                <tr>
+                    <td align="right"><label for="departure_city">Departure City: </label></td>
+                    <td align="left"><input type="text" name="departure_city" id="departure_city" placeholder="from" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="arrival_city">Arrival City: </label></td>
+                    <td align="left"><input type="text" name="arrival_city" id="arrival_city" placeholder="to" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="departure_date_from">Departure Date From: </label></td>
+                    <td align="left"><input type="date" name="departure_date_from" id="departure_date_from" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="departure_date_to">To: </label></td>
+                    <td align="left"><input type="date" name="departure_date_to" id="departure_date_to" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="arrival_date_from">Arrival Date From: </label></td>
+                    <td align="left"><input type="date" name="arrival_date_from" id="arrival_date_from" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="arrival_date_to">To: </label></td>
+                    <td align="left"><input type="date" name="arrival_date_to" id="arrival_date_to" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="Search" />
+        </form>
+        <div align="center">
+            <h2 align="center">--OR--</h2>
+            <h2>Abstract Search</h2>
+            <form action="/staff/abstract_result" method="POST">
+                <input type="text" name="searchText" placeholder="search"/>
+                <input type="submit" value = "Search" />
+            </form>
+        </div>
+        <div align="center">
+            <h2 align="center">--OR--</h2>
+            <h2>Search for an Existing Flight</h2>
+            <form action="/staff/number_result" method="POST">
+                <table>
+                    <tr>
+                        <td align="right"><label for="flight_number">Flight Number: </label></td>
+                        <td align="left"><input type="text" name="flight_number" id="flight_number" placeholder="num." /></td>
+                    </tr>
+                </table>
+                <input type="submit" value = "Search" />
+            </form>
+        </div>
+        {% if search_result %}
+        <br>
+        <table border="1" align="center">
+            <tr>
+                <th>Airline</th>
+                <th>Flight Number</th>
+                <th>Departure Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Time</th>
+                <th>Ticket Price</th>
+                <th>Flight Status</th>
+                <th>Plane ID</th>
+                <th>Customer</th>
+                {% if operator == 1 %}
+                <th>Edit Status</th>
+                {% endif %}
+            </tr>
+            {% for line in search_result %}
+            <tr>
+                <td>{{line['airline_name']}}</td>
+                <td>{{line['flight_num']}}</td>
+                <td>{{line['departure_airport']}}</td>
+                <td>{{line['departure_time']}}</td>
+                <td>{{line['arrival_airport']}}</td>
+                <td>{{line['arrival_time']}}</td>
+                <td>{{line['price']}}</td>
+                <td>{{line['status']}}</td>
+                <td>{{line['airplane_id']}}</td>
+                <td>
+                    <form action="/staff/view_customer" method="POST">
+                        <input type="submit" value="Customer" name="{{line['airline_name']}},{{line['flight_num']}}"/>
+                    </form>
+                </td>
+                {% if operator == 1 %}
+                <td>
+                    <form action="/staff/flight_update" method="POST">
+                        <select name="status" id="status" required>
+                            <option value="Upcoming">Upcoming</option>
+                            <option value="In progress">In progress</option>
+                            <option value="Delayed">Delay</option>
+                            <option value="Done">Done</option>
+                        </select>
+                        <input type="submit" value="submit" name="{{line['airline_name']}},{{line['flight_num']}}"/>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+
+    <div align="center" id="top_5_booking_agent">
+        <h2>Top 5 Booking Agent</h2>
+        <div>
+            <table>
+                <tr>
+                    <th colspan="2"><h3>Sort by Number of Tickets</h3></th>
+                    <th><h3 align="center">Sort by Commission</h3></th>
+                </tr>
+                <tr>
+                    <td><h4 align="center">Last Month</h4></td>
+                    <td><h4 align="center">Last Year</h4></td>
+                    <td><h4 align="center">Last Year</h4></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td align="right"><label>1st: </label></td>
+                                <td align="left">{{agent_bynum_month[0]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>2nd: </label></td>
+                                <td align="left">{{agent_bynum_month[1]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>3rd: </label></td>
+                                <td align="left">{{agent_bynum_month[2]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>4th: </label></td>
+                                <td align="left">{{agent_bynum_month[3]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>5th: </label></td>
+                                <td align="left">{{agent_bynum_month[4]}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td align="right"><label>1st: </label></td>
+                                <td align="left">{{agent_bynum_year[0]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>2nd: </label></td>
+                                <td align="left">{{agent_bynum_year[1]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>3rd: </label></td>
+                                <td align="left">{{agent_bynum_year[2]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>4th: </label></td>
+                                <td align="left">{{agent_bynum_year[3]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>5th: </label></td>
+                                <td align="left">{{agent_bynum_year[4]}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td align="right"><label>1st: </label></td>
+                                <td align="left">{{agent_bycom_year[0]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>2nd: </label></td>
+                                <td align="left">{{agent_bycom_year[1]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>3rd: </label></td>
+                                <td align="left">{{agent_bycom_year[2]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>4th: </label></td>
+                                <td align="left">{{agent_bycom_year[3]}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label>5th: </label></td>
+                                <td align="left">{{agent_bycom_year[4]}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+               
+    <div align="center" id="view_frequent_customer">
+        <h2>View frequent customer</h2>
+        <table border="1">
+            <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Number of flights</th>
+                <th>Flights</th>
+            </tr>
+            {% for customer in customers%}
+            <tr>
+                <td>{{customer['email']}}</td>
+                <td>{{customer['name']}}</td>
+                <td>{{customer['num_of_flights']}}</td>
+                <td>
+                    <form action="/staff/view_flight" method="POST">
+                        <input type="submit" value="View flights" name="{{customer['email']}}"/>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table> 
+    </div>
+
+    <div align="center" id="ticket_sold_reports">
+        <h2>Ticket Sold Reports</h2>
+        <form action="/staff/track_report" method="post">
+            <table>
+                <tr>
+                    <td align="right"><label for="from">From: </label></td>
+                    <td align="left"><input type="date" name="from" id="from" /></td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="to">To: </label></td>
+                    <td align="left"><input type="date" name="to" id="to" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="Track">
+        </form>
+        <table>
+            <tr>
+                <td align="right"><label>Last Year:</label></td>
+                <td align="left">{{ticketsold_year}}</td>
+            </tr>
+            <tr>
+                <td align="right"><label>Last Month:</label></td>
+                <td align="left">{{ticketsold_month}}</td>
+            </tr>
+            {% if ticketsold_stime %}
+            <tr>
+                <td align="right"><label>Time selected:</label></td>
+                <td align="left">{{ticketsold_stime}}</td>
+            </tr>
+            {% endif %}
+        </table>
+        <div>
+            <svg id="ticketsold_chart" width="800" height="500"></svg>
+        </div>
+    </div>
+
+    <div align="center" id="revenue_comparison">
+        <h2>Revenue Comparison</h2>
+        <div>
+            <button onclick="update(monthURL) ">Month</button>
+            <button onclick="update(yearURL)">Year</button>
+        </div>
+        <div>
+            <svg id="revenuechart" width="500" height="500"></svg>
+        </div>
+
+    </div>
+
+    <div align="center" id="view_top_destination">
+        <h2>Top Destination</h2>
+        <table>
+            <tr>
+                <th><h4>Last 3 months</h4></th>
+                <th><h4>Last year</h4></th>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td align="right"><label>1st: </label></td>
+                            <td align="left">{{destination_month[0]}}</td>
+                        </tr>  
+                        <tr>
+                            <td align="right"><label>2nd: </label></td>
+                            <td align="left">{{destination_month[1]}}</td>
+                        </tr>  
+                        <tr>
+                            <td align="right"><label>3nd: </label></td>
+                            <td align="left">{{destination_month[2]}}</td>
+                        </tr>  
+                    </table>
+                </td>   
+                <td>
+                    <table>
+                        <tr>
+                            <td align="right"><label>1st: </label></td>
+                            <td align="left">{{destination_year[0]}}</td>
+                        </tr>  
+                        <tr>
+                            <td align="right"><label>2nd: </label></td>
+                            <td align="left">{{destination_year[1]}}</td>
+                        </tr> 
+                        <tr>
+                            <td align="right"><label>2rd: </label></td>
+                            <td align="left">{{destination_year[2]}}</td>
+                        </tr>  
+                    </table>
+                </td>    
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script>
+        var revenueMonthDataUrl = "{{ url_for('revenue_data_month') }}";
+        var revenueYearDataUrl = "{{ url_for('revenue_data_year') }}";
+    </script>
+    <script src={{ url_for('static', filename = 'revenuechart.js') }}></script>
+
+    <script>
+        var ticketSoldDataUrl = "{{ url_for('ticket_sold_data') }}";
+    </script>
+    <script src={{ url_for('static', filename = 'ticketsoldChart.js') }}></script>
+</body>
+</html>

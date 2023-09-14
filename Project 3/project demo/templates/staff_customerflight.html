@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Flights</title>
+</head>
+<body>
+    <div align="center">
+        <h1>Customer {{username}}'s Flights</h1>
+        {% if flight_result %}
+        <table border="1" align="center">
+            <tr>
+                <th>Airline</th>
+                <th>Flight Number</th>
+                <th>Departure Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Time</th>
+                <th>Ticket Price</th>
+                <th>Flight Status</th>
+                <th>Plane ID</th>
+            </tr>
+            {% for line in flight_result %}
+            <tr>
+                <td>{{line['airline_name']}}</td>
+                <td>{{line['flight_num']}}</td>
+                <td>{{line['departure_airport']}}</td>
+                <td>{{line['departure_time']}}</td>
+                <td>{{line['arrival_airport']}}</td>
+                <td>{{line['arrival_time']}}</td>
+                <td>{{line['price']}}</td>
+                <td>{{line['status']}}</td>
+                <td>{{line['airplane_id']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+    <a align="center" href="/staff/back">Back to homepage</a>
+</body>
+</html>
